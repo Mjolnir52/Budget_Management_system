@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Budget Management</title>
+    <script src="script.js"></script>
+    <style>
+        :root {
+            --primary-color: #4361ee;
+            --secondary-color: #3f37c9;
+            --accent-color: #4cc9f0;
+            --light-color: #f8f9fa;
+            --dark-color: #212529;
+            --success-color: #4caf50;
+            --danger-color: #f44336;
+            --warning-color: #ff9800;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: var(--dark-color);
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 30px;
+        }
+        
+        h1 {
+            text-align: center;
+            color: var(--primary-color);
+            margin-bottom: 30px;
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+        
+        h2 {
+            color: var(--secondary-color);
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 5px;
+        }
+        
+        h3 {
+            color: var(--secondary-color);
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+        
+        .forms {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            background-color: var(--light-color);
+            padding: 20px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
+        
+        input {
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            transition: border 0.3s ease;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 2px rgba(76, 201, 240, 0.3);
+        }
+        
+        button {
+            padding: 12px;
+            border: none;
+            border-radius: var(--border-radius);
+            background-color: var(--primary-color);
+            color: white;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        button:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        .summary {
+            background-color: var(--light-color);
+            padding: 20px;
+            border-radius: var(--border-radius);
+            margin-bottom: 30px;
+            box-shadow: var(--box-shadow);
+        }
+        
+        .summary p {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .summary span {
+            font-weight: 600;
+        }
+        
+        #totalBalance {
+            color: var(--primary-color);
+            font-size: 1.2rem;
+        }
+        
+        .list {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+        
+        ul {
+            list-style-type: none;
+            max-height: 300px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+        
+        li {
+            background-color: white;
+            padding: 12px 15px;
+            margin-bottom: 10px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: transform 0.2s ease;
+        }
+        
+        li:hover {
+            transform: translateX(5px);
+        }
+        
+        .income-list li {
+            border-left: 4px solid var(--success-color);
+        }
+        
+        .expense-list li {
+            border-left: 4px solid var(--danger-color);
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent-color);
+            border-radius: 10px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-color);
+        }
+        
+        @media (max-width: 768px) {
+            .forms, .list {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Personal Budget</h1>
+        <div class="forms">
+            <div>
+                <h2>Add Income</h2>
+                <form id="incomeForm">
+                    <input type="text" id="incomeName" placeholder="Income source">
+                    <input type="number" id="incomeAmount" placeholder="Enter income amount">
+                    <button type="submit"> Add Income </button>
+                </form>
+            </div>
+
+            <div>
+                <h2>Add Expense</h2>
+                <form id="expenseForm">
+                    <input type="text" id="expenseName" placeholder="Expense description">
+                    <input type="number" id="expenseAmount" placeholder="Enter expense amount">
+                    <button type="submit"> Add Expense </button>
+                </form>
+            </div>
+        </div>
+
+        <div class="summary">
+            <h2>Budget Summary</h2>
+            <p>Total Income: <span id="totalIncome">0</span></p>
+            <p>Total Expense: <span id="totalExpense">0</span></p>
+            <p>Remaining Balance: <span id="totalBalance">0</span></p>
+        </div>
+
+        <div class="list">
+            <div class="income-list">
+                <h3>Income List</h3>
+                <ul id="incomeList">
+                    <!-- Income items will be added here -->
+                </ul>
+            </div>
+            <div class="expense-list">
+                <h3>Expense List</h3>
+                <ul id="expenseList">
+                    <!-- Expense items will be added here -->
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
